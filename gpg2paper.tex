@@ -15,10 +15,10 @@
 \date{\today}
 
 \newcommand\gpgtopng{
-  \immediate\write18{gpg --export-secret-keys \gpkeyid | base64 > temp}
-  \immediate\write18{split temp -n 4 IMG}
-  \immediate\write18{for f in IMG*; do cat $f | qrencode -l L -o /tmp/$f.png; done}
-  \immediate\write18{rm IMG* temp}
+  \immediate\write18{gpg --export-secret-keys \gpkeyid | base64 > G2PTEMP}
+  \immediate\write18{split G2PTEMP -n 4 G2PIMG}
+  \immediate\write18{for f in G2PIMG*; do cat $f | qrencode -l L -o /tmp/$f.png; done}
+  \immediate\write18{rm G2PIMG* G2PTEMP}
 }
 
 \gpgtopng
@@ -27,32 +27,24 @@
 
 \maketitle
 
-\begin{figure}[H]
+\begin{figure}[H] 
   \centering
   \foreach \l in {a, ..., b} {
     \begin{subfigure}{0.4\textwidth}
       \centering
-      \includegraphics[width=\textwidth]{/tmp/IMGa\l.png}
-      \caption{QR: \l}
+      \includegraphics[width=\textwidth]{/tmp/G2PIMGa\l.png}
+      \caption{}
     \end{subfigure}%
   }
 
   \foreach \l in {c, ..., d} {
     \begin{subfigure}{0.4\textwidth}
       \centering
-      \includegraphics[width=1.0\textwidth]{/tmp/IMGa\l.png}
-      \caption{QR: \l}
+      \includegraphics[width=1.0\textwidth]{/tmp/G2PIMGa\l.png}
+      \caption{}
     \end{subfigure}%
   }
 
 \end{figure}
-
-
-To recover run the following command:
-
-\begin{verbatim}
-for f in IMG*.png; do zbarimg --raw $f | head -c -1 > $f.out ; done
-cat *.out | base64 -d | paperkey --pubring ~/.gnupg/pubring.gpg | gpg --import
-\end{verbatim}
 
 \end{document}
