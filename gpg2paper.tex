@@ -7,15 +7,15 @@
 \usepackage{subcaption}
 \usepackage[a4paper, margin=1in]{geometry}
 
-\providecommand{\gptitle}{Content Decription}
-\providecommand{\gpkeyfinger}{AC5C6287A51FFF45931387BF8E0B6566478122ED}
-\providecommand{\gpkeyid}{john@doeadress.com}
+\providecommand{\gptitle}{Content Description}
+\providecommand{\gpkeyfinger}{}
+\providecommand{\gpfile}{}
 
 \title{\gptitle\\\gpkeyfinger}
 \date{\today}
 
 \newcommand\gpgtopng{
-  \immediate\write18{gpg --export-secret-keys \gpkeyid | base64 > G2PTEMP}
+  \immediate\write18{cat \gpfile | base64 > G2PTEMP}
   \immediate\write18{split G2PTEMP -n 4 G2PIMG}
   \immediate\write18{for f in G2PIMG*; do cat $f | qrencode -l L -o /tmp/$f.png; done}
   \immediate\write18{rm G2PIMG* G2PTEMP}
@@ -27,7 +27,7 @@
 
 \maketitle
 
-\begin{figure}[H] 
+\begin{figure}[H]
   \centering
   \foreach \l in {a, ..., b} {
     \begin{subfigure}{0.4\textwidth}
