@@ -1,1 +1,7 @@
 workdir/**
+gpg2paper.log
+gpg2paper.aux
+gpg2paper.fls
+gpg2paper.pdf
+gpg2paper.synctex.gz
+gpg2paper.fdb_latexmk

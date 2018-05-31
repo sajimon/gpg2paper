@@ -1,0 +1,58 @@
+\documentclass{article}
+
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{pgffor}
+\usepackage{blindtext}
+\usepackage{subcaption}
+\usepackage[a4paper, margin=1in]{geometry}
+
+\providecommand{\gptitle}{Content Decription}
+\providecommand{\gpkeyfinger}{AC5C6287A51FFF45931387BF8E0B6566478122ED}
+\providecommand{\gpkeyid}{john@doeadress.com}
+
+\title{\gptitle\\\gpkeyfinger}
+\date{\today}
+
+\newcommand\gpgtopng{
+  \immediate\write18{gpg --export-secret-keys \gpkeyid | base64 > temp}
+  \immediate\write18{split temp -n 4 IMG}
+  \immediate\write18{for f in IMG*; do cat $f | qrencode -l L -o /tmp/$f.png; done}
+  \immediate\write18{rm IMG* temp}
+}
+
+\gpgtopng
+
+\begin{document}
+
+\maketitle
+
+\begin{figure}[H]
+  \centering
+  \foreach \l in {a, ..., b} {
+    \begin{subfigure}{0.4\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{/tmp/IMGa\l.png}
+      \caption{QR: \l}
+    \end{subfigure}%
+  }
+
+  \foreach \l in {c, ..., d} {
+    \begin{subfigure}{0.4\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{/tmp/IMGa\l.png}
+      \caption{QR: \l}
+    \end{subfigure}%
+  }
+
+\end{figure}
+
+
+To recover run the following command:
+
+\begin{verbatim}
+for f in IMG*.png; do zbarimg --raw $f | head -c -1 > $f.out ; done
+cat *.out | base64 -d | paperkey --pubring ~/.gnupg/pubring.gpg | gpg --import
+\end{verbatim}
+
+\end{document}
